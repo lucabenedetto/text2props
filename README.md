@@ -1,5 +1,6 @@
 # text2props
-Repository containing the source code of text2props, a framework to estimate latent traits of questions from textual information, presented in the paper "Introducing a framework to assess newly created questions with Natural Language Processing" at the AIED20 conference.
+This repository contains the source code of text2props, a framework to estimate latent traits of questions from textual information.
+text2props was presented in the paper "Introducing a framework to assess newly created questions with Natural Language Processing" at the 2020 International conference of Artificial Intelligence in Education (AIED20).
 
 ---
 
