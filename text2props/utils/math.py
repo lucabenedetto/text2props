@@ -4,8 +4,7 @@ from ..constants import DISCRIMINATION_COEFFICIENT
 
 def item_response_function(difficulty: float, skill: float, discrimination: float, guess: float, slip: float) -> float:
     """
-    Computes the logistic function for the given arguments and returns a float. The initial np.product is necessary for
-    the multidimensional case.
+    Computes the logistic function for the given arguments and returns a float.
     :param difficulty:
     :param skill:
     :param discrimination:
@@ -13,15 +12,7 @@ def item_response_function(difficulty: float, skill: float, discrimination: floa
     :param slip:
     :return:
     """
-    return np.product(
-        np.add(
-            guess,
-            np.divide(
-                1.0 - np.add(guess, slip),
-                1.0 + np.exp(-1.7 * np.multiply(discrimination, np.subtract(skill, difficulty)))
-            )
-        )
-    )
+    return guess + np.divide(1.0-(guess+slip), 1.0+np.exp(-1.7*discrimination*(skill-difficulty)))
 
 
 def inverse_item_response_function(
