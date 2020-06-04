@@ -18,19 +18,6 @@ If you use this framework, please cite the related paper (at the moment, only th
 
 ---
 
-Models implemented with this framework estimate questions' latent traits using the text of the 
-questions and, in the case of Multiple Choice Questions (MCQ), the text of the possible choices.
-Using `text2props`, one or more latent traits can be estimated at the same time.
-
-The model implemented with `text2props` have two components:
-
-1. *latent traits calibrator* - performs question calibration, by estimating ground truth latent traits, which are then 
-used to train and evaluate the estimators that estimate latent traits from textual information.
-2. *estimator of latent traits form text* - performs the actual estimation of the latent traits from text. This is the 
-part of which is used to calibrate previously unseen questions.
-
----
-
 The repo is organized as follows:
 
 - `scripts` contains some example scripts and the scripts used to obtain the results presented in the paper
