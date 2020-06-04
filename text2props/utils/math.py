@@ -4,12 +4,12 @@ from ..constants import DISCRIMINATION_COEFFICIENT
 
 def item_response_function(difficulty: float, skill: float, discrimination: float, guess: float, slip: float) -> float:
     """
-    Computes the logistic function for the given arguments and returns a float.
-    :param difficulty:
-    :param skill:
-    :param discrimination:
-    :param guess:
-    :param slip:
+    Computes the item response function for the given params and returns a float (probability of correct answer).
+    :param difficulty: difficulty of the question
+    :param skill: the skill of the student
+    :param discrimination: the discrimination of the question
+    :param guess: the guess factor
+    :param slip: the slip factor
     :return:
     """
     return guess + np.divide(1.0-(guess+slip), 1.0+np.exp(-1.7*discrimination*(skill-difficulty)))
@@ -18,10 +18,10 @@ def item_response_function(difficulty: float, skill: float, discrimination: floa
 def inverse_item_response_function(
         difficulty: float, skill: float, discrimination: float, guess: float, slip: float) -> float:
     """
-    Computes 1 - logistic function for the given arguments and returns a float.
-    :param difficulty: difficulty of the item
-    :param skill: the skill of the user
-    :param discrimination: the discrimination factor
+    Computes 1 - item response function for the given params and returns a float.
+    :param difficulty: difficulty of the question
+    :param skill: the skill of the student
+    :param discrimination: the discrimination of the question
     :param guess: the guess factor
     :param slip: the slip factor
     :return:
