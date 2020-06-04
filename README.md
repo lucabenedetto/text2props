@@ -22,11 +22,7 @@ The repo is organized as follows:
 
 - `scripts` contains some example scripts and the scripts used to obtain the results presented in the paper
 - `tests` contains the unittests
-- `text2props/data_validation` contains methods to validate the data (e.g., check whether a DF has the required columns)
-- `text2props/evaluation` contains the code for evaluating the models.
-- `text2props/model` contains the definition of the classes used to implement the models.
-- `text2props/modules` contains the definition of the classes used to implement the modules and their components.
-- `text2props/utils` contains some utility code used in other parts of the package.
+- `text2props` contains the source code of the framework, plus a README describing how the framework works
 
 ---
 
