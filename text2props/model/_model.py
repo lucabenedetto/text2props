@@ -21,7 +21,7 @@ class Text2PropsModel(object):
         self.estimator_from_text = estimator_from_text
         self.ground_truth_latent_traits = None
 
-    def calibrate_latent_traits(self, df_gte: pd.DataFrame):
+    def calibrate_latent_traits(self, df_gte):
         """
         Performs the initial calibration of latent traits. These latent traits are the ones that will later be used as
         ground truth while training the model that performs the estimation of latent traits from text.
