@@ -6,7 +6,7 @@ setup(
     version='0.1.0',
     description='Framework for the estimation of questions latent traits from text.',
     author='Luca Benedetto',
-    license='',
+    license='gpl-3.0',
     python_requires='>=3.7',
     install_requires=[
         'gensim==3.8.1',
