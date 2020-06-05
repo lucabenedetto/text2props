@@ -6,6 +6,11 @@ import pandas as pd
 
 
 class FeatureEngAndRegressionEstimatorFromText(BaseEstimatorFromText):
+    """
+    The FeatureEngAndRegressionEstimatorFromText object is made of one or more pipelines, which work in parallel, each
+    working on one latent trait. Each pipeline is made of two building blocks: the FeatureEngineering module and the
+    Regression module.
+    """
 
     def __init__(self, pipelines: dict):
         super().__init__()
