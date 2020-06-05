@@ -1,5 +1,5 @@
 from ..constants import Q_ID
-from ..constants import OUTPUT_DATA_PATH
+from ..constants import DATA_PATH
 from ..data_validation import check_question_df_columns, check_answers_df_columns
 from ..evaluation.latent_traits_estimation import compute_error_metrics_latent_traits_estimation
 from ..modules.estimators_from_text import BaseEstimatorFromText
@@ -120,7 +120,7 @@ class Text2PropsModel(object):
 
     def store_calibrated_latent_traits(
             self,
-            output_data_path: str = OUTPUT_DATA_PATH,
+            output_data_path: str = DATA_PATH,
             output_filename: str = 'latent_traits.p'
     ):
         """
