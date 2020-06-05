@@ -4,6 +4,10 @@ import numpy as np
 
 
 class MajorityEstimatorFromText(BaseEstimatorFromText):
+    """
+    Very simple EstimatorFromText object. It does not really work on the texts, it only considers the average value of
+    latent traits in the training set and assigns that value to all the questions in the test set.
+    """
 
     def __init__(self):
         super().__init__()
