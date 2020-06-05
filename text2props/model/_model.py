@@ -11,7 +11,9 @@ import pickle
 
 class Text2PropsModel(object):
     def __init__(
-            self, latent_traits_calibrator: BaseLatentTraitsCalibrator, estimator_from_text: BaseEstimatorFromText
+            self,
+            latent_traits_calibrator: BaseLatentTraitsCalibrator,
+            estimator_from_text: BaseEstimatorFromText
     ):
         self.latent_traits_calibrator = latent_traits_calibrator
         self.n_latent_traits = latent_traits_calibrator.get_n_latent_traits()
@@ -19,27 +21,46 @@ class Text2PropsModel(object):
         self.estimator_from_text = estimator_from_text
         self.ground_truth_latent_traits = None
 
-    def calibrate_latent_traits(self, df_gte):
+    def calibrate_latent_traits(self, df_gte: pd.DataFrame):
+        """
+        Performs the initial calibration of latent traits. These latent traits are the ones that will later be used as
+        ground truth while training the model that performs the estimation of latent traits from text.
+        :param df_gte:
+        :return:
+        """
         if self.latent_traits_calibrator is None:
             raise ValueError("No LatentTraitsCalibrator defined")
         self.ground_truth_latent_traits = self.latent_traits_calibrator.calibrate_latent_traits(df_gte)
         return self.ground_truth_latent_traits
 
-    def train(self, df_train, df_gte=None):
+    def train(self, df_train: pd.DataFrame, df_gte: pd.DataFrame = None):
+        """
+        Train the model, by training the latent traits calibrator and estimator from text objects. The df_gte dataframe
+        might be None for compatibility with the KnownParametersCalibrator, which does not require the calibration of
+        latent traits as they are known in advance.
+        :param df_train:
+        :param df_gte:
+        :return:
+        """
         self.calibrate_latent_traits(df_gte)
         self.estimator_from_text.train(df_train, self.ground_truth_latent_traits)
 
-    def predict(self, input_df):
+    def predict(self, input_df: pd.DataFrame):
+        """
+        Perform the prediction of latent traits from the input dataframe.
+        :param input_df:
+        :return:
+        """
         return self.estimator_from_text.predict(input_df)
 
     def randomized_cv_train(
             self,
-            param_distributions,
+            param_distributions: dict,
             df_train: pd.DataFrame,
             df_gte: pd.DataFrame = None,
             n_iter: int = 10,
             n_jobs: int = None,
-            cv=None,
+            cv: int = None,
             random_state: int = None,
             perform_calibration: bool = False
     ):
@@ -75,6 +96,12 @@ class Text2PropsModel(object):
         return scores
 
     def compute_error_metrics_latent_traits_estimation(self, input_df: pd.DataFrame) -> dict:
+        """
+        Performs the prediction from the input dataframe, and compute the error metrics for the estimation of each
+        latent trait. The results are returned in a dictionary whose keys are the name of the latent traits.
+        :param input_df:
+        :return:
+        """
         results = dict()
         predictions = self.predict(input_df)
         for latent_trait in self.latent_traits:
