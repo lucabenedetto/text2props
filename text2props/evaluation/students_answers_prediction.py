@@ -1,4 +1,4 @@
-from text2props.constants import OUTPUT_DATA_PATH, S_ID, TIMESTAMP, CORRECT, Q_ID, DIFFICULTY, DISCRIMINATION
+from text2props.constants import S_ID, TIMESTAMP, CORRECT, Q_ID, DIFFICULTY, DISCRIMINATION
 from ._prediction_methods import irt_prediction_with_update
 import numpy as np
 import pandas as pd
