@@ -10,5 +10,5 @@ with pickle while training each model.
 The scripts are grouped according to the sections of the paper:
 
 * 5.1 experiments on latent traits estimation
-* 5.2 experiments on students' performance prediction
+* 5.2 experiments on students' performance prediction (they have to be run in the correct order)
 * 5.3 ablation study
