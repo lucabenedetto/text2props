@@ -1,7 +1,7 @@
 # DATA PATH
 DATA_PATH = 'data/processed'
 RAW_DATA_PATH = 'data/raw'
-OUTPUT_DATA_PATH = 'output_data'
+OUTPUT_DATA_PATH = 'outputs'
 MODELS_PATH = 'models'
 
 # HEADERS
