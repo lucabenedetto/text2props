@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 from text2props.utils.math import inverse_item_response_function, item_response_function, information_function
 from text2props.constants import (
     S_ID,
@@ -84,7 +84,7 @@ def irt_prediction_with_update(
         initial_theta: float = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
         guess: float = DEFAULT_GUESS,
         slip: float = DEFAULT_SLIP,
-) -> List[float]:
+) -> Dict[List[float]]:
     """
     Performs the task of students' performance prediction for all the students in the interactions_df. It does so by
     calling the perform_user_irt_prediction method, which works on one students only.
@@ -96,20 +96,19 @@ def irt_prediction_with_update(
     :param initial_theta: initial estimation of the difficulty for new items (default: middle point of difficulty range)
     :param guess: guess factor
     :param slip: slip factor
-    :return: a list containing the predicted answers of each student.
+    :return: a dictionary containing the predicted answers of each student (student IDs are the keys). The predicted
+      answer is a float representing the probability that the student answer that question correctly.
     """
-    predicted_result = []
+    predicted_result = dict()
     for user_id in user_id_list:
-        predicted_result.extend(
-            perform_user_irt_prediction(
-                interactions_df=interactions_df[interactions_df[S_ID] == user_id],
-                difficulty_dict=latent_traits_dict[DIFFICULTY],
-                discrimination_dict=latent_traits_dict[DISCRIMINATION],
-                difficulty_range=difficulty_range,
-                theta_increment=theta_increment,
-                initial_theta=initial_theta,
-                guess=guess,
-                slip=slip,
+        predicted_result[user_id] = perform_user_irt_prediction(
+            interactions_df=interactions_df[interactions_df[S_ID] == user_id],
+            difficulty_dict=latent_traits_dict[DIFFICULTY],
+            discrimination_dict=latent_traits_dict[DISCRIMINATION],
+            difficulty_range=difficulty_range,
+            theta_increment=theta_increment,
+            initial_theta=initial_theta,
+            guess=guess,
+            slip=slip,
             )
-        )
     return predicted_result

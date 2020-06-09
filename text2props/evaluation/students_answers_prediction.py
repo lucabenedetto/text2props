@@ -43,7 +43,10 @@ def evaluate_students_answers_prediction(
         dict_estimated_latent_traits[DISCRIMINATION][q_id] = dict_real_latent_traits[DISCRIMINATION][q_id]
 
     print("[INFO] Doing prediction with ground truth IRT latent traits...")
-    irt_predicted_results = irt_prediction_with_update(df_sap, dict_real_latent_traits, user_id_list)
+    dict_irt_predicted_results = irt_prediction_with_update(df_sap, dict_real_latent_traits, user_id_list)
+    irt_predicted_results = []
+    for user_id in user_id_list:
+        irt_predicted_results.extend(dict_irt_predicted_results[user_id])
     pickle.dump(irt_predicted_results, open(os.path.join(output_folder, 'performance-prediction-irt.p'), 'wb'))
     print("[INFO] Done")
     output_string = 'IRT estimated latent traits: '
@@ -54,7 +57,10 @@ def evaluate_students_answers_prediction(
     print(output_string)
 
     print("[INFO] Doing prediction with predicted latent traits...")
-    nlp_predicted_results = irt_prediction_with_update(df_sap, dict_estimated_latent_traits, user_id_list)
+    dict_nlp_predicted_results = irt_prediction_with_update(df_sap, dict_estimated_latent_traits, user_id_list)
+    nlp_predicted_results = []
+    for user_id in user_id_list:
+        nlp_predicted_results.extend(dict_nlp_predicted_results[user_id])
     pickle.dump(nlp_predicted_results, open(os.path.join(output_folder, 'performance-prediction-nlp.p'), 'wb'))
     print("[INFO] Done")
     output_string = 'NLP estimated latent traits: '
