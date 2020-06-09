@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from typing import Tuple, List
 from text2props.utils.math import inverse_item_response_function, item_response_function, information_function
 from text2props.constants import (
     S_ID,
@@ -20,12 +21,12 @@ def perform_user_irt_prediction(
         interactions_df: pd.DataFrame,
         difficulty_dict: dict,
         discrimination_dict: dict,
-        difficulty_range: DIFFICULTY_RANGE,
-        theta_increment=0.1,
-        initial_theta=(DIFFICULTY_MAX+DIFFICULTY_MIN)/2,
-        guess=DEFAULT_GUESS,
-        slip=DEFAULT_SLIP,
-) -> list:
+        difficulty_range: Tuple[float, float] = DIFFICULTY_RANGE,
+        theta_increment: float = 0.1,
+        initial_theta: float = (DIFFICULTY_MAX+DIFFICULTY_MIN)/2,
+        guess: float = DEFAULT_GUESS,
+        slip: float = DEFAULT_SLIP,
+) -> List[float]:
     """
     :param interactions_df: dataframe containing all the interactions between users and items
     :param difficulty_dict:
@@ -78,12 +79,12 @@ def irt_prediction_with_update(
         interactions_df: pd.DataFrame,
         latent_traits_dict: dict,
         user_id_list: list,
-        difficulty_range: tuple = (DIFFICULTY_MIN, DIFFICULTY_MAX),
+        difficulty_range: Tuple[float, float] = DIFFICULTY_RANGE,
         theta_increment: float = 0.1,
         initial_theta: float = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
         guess: float = DEFAULT_GUESS,
         slip: float = DEFAULT_SLIP,
-) -> list:
+) -> List[float]:
     """
     Performs the task of students' performance prediction for all the students in the interactions_df. It does so by
     calling the perform_user_irt_prediction method, which works on one students only.
@@ -95,7 +96,7 @@ def irt_prediction_with_update(
     :param initial_theta: initial estimation of the difficulty for new items (default: middle point of difficulty range)
     :param guess: guess factor
     :param slip: slip factor
-    :return: a list of lists, for each student the list of predicted answers.
+    :return: a list containing the predicted answers of each student.
     """
     predicted_result = []
     for user_id in user_id_list:
