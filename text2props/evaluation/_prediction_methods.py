@@ -84,7 +84,7 @@ def irt_prediction_with_update(
         initial_theta: float = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
         guess: float = DEFAULT_GUESS,
         slip: float = DEFAULT_SLIP,
-) -> Dict[List[float]]:
+) -> Dict[str, List[float]]:
     """
     Performs the task of students' performance prediction for all the students in the interactions_df. It does so by
     calling the perform_user_irt_prediction method, which works on one students only.
