@@ -1,41 +1,23 @@
-from text2props.constants import (
-    DATA_PATH,
-    OUTPUT_DATA_PATH,
-    S_ID,
-    TIMESTAMP,
-    CORRECT,
-    Q_ID,
-    DIFFICULTY,
-    DISCRIMINATION,
-)
+from text2props.constants import OUTPUT_DATA_PATH, S_ID, TIMESTAMP, CORRECT, Q_ID, DIFFICULTY, DISCRIMINATION
 from ._prediction_methods import irt_prediction_with_update
 import numpy as np
 import os
 import pandas as pd
 import pickle
 from sklearn.metrics import confusion_matrix, roc_auc_score
-from typing import Dict, List, Iterable
+from typing import Dict, Iterable
 
 
 def evaluate_students_answers_prediction(
         df_sap: pd.DataFrame,
         df_train: pd.DataFrame,
-        df_test: pd.DataFrame,
         dict_real_latent_traits: Dict[str, Dict[str, float]],
-        dict_stored_predictions: Dict[str, List],
+        dict_estimated_latent_traits: Dict[str, Dict[str, float]],
         output_folder: str = OUTPUT_DATA_PATH,
 ) -> None:
     df_sap = df_sap.sort_values([S_ID, TIMESTAMP])
     true_results = df_sap[CORRECT].values
     user_id_list = list(df_sap[S_ID].unique())
-
-    # convert to dict of dict
-    dict_estimated_latent_traits = dict()
-    dict_estimated_latent_traits[DIFFICULTY] = dict()
-    dict_estimated_latent_traits[DISCRIMINATION] = dict()
-    for idx, q_id in enumerate(df_test[Q_ID].values):
-        dict_estimated_latent_traits[DIFFICULTY][q_id] = dict_stored_predictions[DIFFICULTY][idx]
-        dict_estimated_latent_traits[DISCRIMINATION][q_id] = dict_stored_predictions[DISCRIMINATION][idx]
 
     # add real latent traits of train questions to the dict of predicted latent traits (accuracy NOT measured on them)
     list_train_questions = list(df_train[Q_ID].unique())
