@@ -19,8 +19,8 @@ from text2props.constants import (
 
 def perform_user_irt_prediction(
         interactions_df: pd.DataFrame,
-        difficulty_dict: dict,
-        discrimination_dict: dict,
+        difficulty_dict: Dict[str, float],
+        discrimination_dict: Dict[str, float],
         difficulty_range: Tuple[float, float] = DIFFICULTY_RANGE,
         theta_increment: float = 0.1,
         initial_theta: float = (DIFFICULTY_MAX+DIFFICULTY_MIN)/2,
@@ -51,33 +51,28 @@ def perform_user_irt_prediction(
 
     for true_result, item_id in interactions_df[[CORRECT, Q_ID]].values:
         if item_id in difficulty_dict.keys() and item_id in discrimination_dict.keys():
-            difficulty = difficulty_dict[item_id]
-            discrimination = discrimination_dict[item_id]
+            difficulty, discrimination = difficulty_dict[item_id], discrimination_dict[item_id]
         else:
-            difficulty = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2
-            discrimination = DEFAULT_DISCRIMINATION
             print("[INFO] Question with ID %s was not known. Manually set latent traits" % item_id)
+            difficulty, discrimination = (DIFFICULTY_MAX+DIFFICULTY_MIN)/2, DEFAULT_DISCRIMINATION
 
         predicted_result.append(item_response_function(difficulty, estimated_theta, discrimination, guess, slip))
 
         func = item_response_function if true_result == 1 else inverse_item_response_function
         for idx, theta in enumerate(thetas):
-            item_log_likelihood = np.log(func(difficulty, theta, discrimination, guess, slip))
-            list_loglikelihood[idx].append(item_log_likelihood)
+            list_loglikelihood[idx].append(np.log(func(difficulty, theta, discrimination, guess, slip)))
             log_likelihood[idx] = np.sum(list_loglikelihood[idx])
-
-            item_information = information_function(difficulty, theta, discrimination, guess, slip)
-            list_information_function[idx].append(item_information)
+            list_information_function[idx].append(information_function(difficulty, theta, discrimination, guess, slip))
             information_func[idx] = np.sum(list_information_function[idx])
 
-        estimated_theta = [thetas[np.argmax(log_likelihood)]]
+        estimated_theta = thetas[np.argmax(log_likelihood)]
 
     return predicted_result
 
 
 def irt_prediction_with_update(
         interactions_df: pd.DataFrame,
-        latent_traits_dict: dict,
+        latent_traits_dict: Dict[str, Dict[str, float]],
         user_id_list: list,
         difficulty_range: Tuple[float, float] = DIFFICULTY_RANGE,
         theta_increment: float = 0.1,
