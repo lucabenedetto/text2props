@@ -26,7 +26,7 @@ def evaluate_students_answers_prediction(
         dict_estimated_latent_traits[DISCRIMINATION][q_id] = dict_real_latent_traits[DISCRIMINATION][q_id]
 
     print("[INFO] Doing prediction with ground truth IRT latent traits...")
-    dict_irt_predicted_results = irt_prediction_with_update(df_sap, dict_real_latent_traits, user_id_list)
+    dict_irt_predicted_results = irt_prediction_with_update(df_sap, dict_real_latent_traits)
     irt_predicted_results = []
     for user_id in user_id_list:
         irt_predicted_results.extend(dict_irt_predicted_results[user_id])
@@ -35,7 +35,7 @@ def evaluate_students_answers_prediction(
     print("                AUC = %.5f" % roc_auc_score(true_results, irt_predicted_results))
 
     print("[INFO] Doing prediction with predicted latent traits...")
-    dict_nlp_predicted_results = irt_prediction_with_update(df_sap, dict_estimated_latent_traits, user_id_list)
+    dict_nlp_predicted_results = irt_prediction_with_update(df_sap, dict_estimated_latent_traits)
     nlp_predicted_results = []
     for user_id in user_id_list:
         nlp_predicted_results.extend(dict_nlp_predicted_results[user_id])

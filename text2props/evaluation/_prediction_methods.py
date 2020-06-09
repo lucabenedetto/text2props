@@ -73,7 +73,6 @@ def perform_user_irt_prediction(
 def irt_prediction_with_update(
         interactions_df: pd.DataFrame,
         latent_traits_dict: Dict[str, Dict[str, float]],
-        user_id_list: list,
         difficulty_range: Tuple[float, float] = DIFFICULTY_RANGE,
         theta_increment: float = 0.1,
         initial_theta: float = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
@@ -85,7 +84,6 @@ def irt_prediction_with_update(
     calling the perform_user_irt_prediction method, which works on one students only.
     :param interactions_df: input dataframe containing the answers given by the students to the questions.
     :param latent_traits_dict: dictionary containing the latent traits of the questions
-    :param user_id_list: list of users in the interactions df that should be taken into consideration
     :param difficulty_range: range of difficulties to consider
     :param theta_increment: granularity of the estimated theta
     :param initial_theta: initial estimation of the difficulty for new items (default: middle point of difficulty range)
@@ -95,7 +93,7 @@ def irt_prediction_with_update(
       answer is a float representing the probability that the student answer that question correctly.
     """
     predicted_result = dict()
-    for user_id in user_id_list:
+    for user_id in interactions_df[S_ID].unique():
         predicted_result[user_id] = perform_user_irt_prediction(
             interactions_df=interactions_df[interactions_df[S_ID] == user_id],
             difficulty_dict=latent_traits_dict[DIFFICULTY],
