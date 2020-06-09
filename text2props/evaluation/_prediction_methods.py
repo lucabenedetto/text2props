@@ -1,10 +1,6 @@
 import numpy as np
 import pandas as pd
-from text2props.utils.math import (
-    inverse_item_response_function,
-    item_response_function,
-    information_function,
-)
+from text2props.utils.math import inverse_item_response_function, item_response_function, information_function
 from text2props.constants import (
     S_ID,
     CORRECT,
@@ -82,12 +78,25 @@ def irt_prediction_with_update(
         interactions_df: pd.DataFrame,
         latent_traits_dict: dict,
         user_id_list: list,
-        difficulty_range=(DIFFICULTY_MIN, DIFFICULTY_MAX),
-        theta_increment=0.1,
-        initial_theta=(DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
-        guess=DEFAULT_GUESS,
-        slip=DEFAULT_SLIP,
+        difficulty_range: tuple = (DIFFICULTY_MIN, DIFFICULTY_MAX),
+        theta_increment: float = 0.1,
+        initial_theta: float = (DIFFICULTY_MAX + DIFFICULTY_MIN) / 2,
+        guess: float = DEFAULT_GUESS,
+        slip: float = DEFAULT_SLIP,
 ) -> list:
+    """
+    Performs the task of students' performance prediction for all the students in the interactions_df. It does so by
+    calling the perform_user_irt_prediction method, which works on one students only.
+    :param interactions_df: input dataframe containing the answers given by the students to the questions.
+    :param latent_traits_dict: dictionary containing the latent traits of the questions
+    :param user_id_list: list of users in the interactions df that should be taken into consideration
+    :param difficulty_range: range of difficulties to consider
+    :param theta_increment: granularity of the estimated theta
+    :param initial_theta: initial estimation of the difficulty for new items (default: middle point of difficulty range)
+    :param guess: guess factor
+    :param slip: slip factor
+    :return: a list of lists, for each student the list of predicted answers.
+    """
     predicted_result = []
     for user_id in user_id_list:
         predicted_result.extend(
