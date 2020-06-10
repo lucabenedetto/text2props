@@ -1,3 +1,7 @@
+from typing import Tuple, List, Iterable, Dict
+
+from scipy.sparse import coo_matrix
+
 from . import BaseRegressionComponent
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
@@ -5,22 +9,31 @@ from sklearn.pipeline import Pipeline
 
 class SklearnRegressionComponent(BaseRegressionComponent):
 
-    def __init__(self, regressor, latent_trait_range):
+    def __init__(self, regressor, latent_trait_range: Tuple[float, float]):
         self.regressor = regressor
         self.min_latent_trait = latent_trait_range[0]
         self.max_latent_trait = latent_trait_range[1]
 
-    def train(self, x, y):
+    def train(self, x: coo_matrix, y: List[float]):
         self.regressor.fit(x, y)
 
-    def predict(self, x):
-        # TODO clean this by doing a single loop
+    def predict(self, x: coo_matrix) -> Iterable[float]:
         predictions = self.regressor.predict(x)
-        predictions = [min(x, self.max_latent_trait) for x in predictions]
-        predictions = [max(x, self.min_latent_trait) for x in predictions]
+        for idx, x in enumerate(predictions):
+            predictions[idx] = min(x, self.max_latent_trait)
+            predictions[idx] = max(x, self.min_latent_trait)
         return predictions
 
-    def randomized_cv_train(self, x, y, param_distributions=None, n_iter=None, cv=None, n_jobs=None, random_state=None):
+    def randomized_cv_train(
+            self,
+            x: coo_matrix,
+            y: List[float],
+            param_distributions: Dict[str, List[float]] = None,
+            n_iter: int = None,
+            cv: int = None,
+            n_jobs: int = None,
+            random_state: int = None
+    ) -> float:
         """
         Performs the training of the regressor with RandomizedSearchCV, and returns the score obtained with the best
         estimator.
