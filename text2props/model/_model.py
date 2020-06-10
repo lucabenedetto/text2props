@@ -1,5 +1,4 @@
-from ..constants import Q_ID
-from ..constants import DATA_PATH
+from ..constants import Q_ID, DATA_PATH
 from ..data_validation import check_question_df_columns, check_answers_df_columns
 from ..evaluation.latent_traits_estimation import compute_error_metrics_latent_traits_estimation
 from ..modules.estimators_from_text import BaseEstimatorFromText
@@ -26,7 +25,7 @@ class Text2PropsModel(object):
         """
         Performs the initial calibration of latent traits. These latent traits are the ones that will later be used as
         ground truth while training the model that performs the estimation of latent traits from text.
-        :param df_gte:
+        :param df_gte: dataframe containing the answers given by students to questions
         :return:
         """
         if self.latent_traits_calibrator is None:
@@ -34,13 +33,14 @@ class Text2PropsModel(object):
         self.ground_truth_latent_traits = self.latent_traits_calibrator.calibrate_latent_traits(df_gte)
         return self.ground_truth_latent_traits
 
-    def train(self, df_train: pd.DataFrame, df_gte: pd.DataFrame = None) -> None:
+    def train(self, df_train: pd.DataFrame, df_gte: pd.DataFrame = None):
         """
         Train the model, by training the latent traits calibrator and estimator from text objects. The df_gte dataframe
         might be None for compatibility with the KnownParametersCalibrator, which does not require the calibration of
         latent traits as they are known in advance.
-        :param df_train:
-        :param df_gte:
+        :param df_train: dataframe containing the textual information about the questions
+        :param df_gte: (optional) dataframe containing the interactions between students and questions, to be used for
+          estimating the ground truth latent traits.
         :return:
         """
         self.calibrate_latent_traits(df_gte)
@@ -48,7 +48,7 @@ class Text2PropsModel(object):
 
     def predict(self, input_df: pd.DataFrame) -> Dict[str, List[float]]:
         """
-        Perform the prediction of latent traits from the input dataframe.
+        Receives as input the dataframe containing the textual information and returns the estimated latent traits.
         :param input_df:
         :return:
         """
