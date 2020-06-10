@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Iterable
 
 import numpy as np
 from scipy.sparse import coo_matrix
@@ -45,7 +45,7 @@ class RegressionModule(object):
         for component in self.components:
             component.train(x, y)
 
-    def predict(self, x: coo_matrix):
+    def predict(self, x: coo_matrix) -> Iterable[float]:
         """
         Performs the prediction for the sparse matrix given as input. The matrix is obtained from the FeatureEngineering
           module and contains the features obtained transforming the input text. The final prediction for each input
