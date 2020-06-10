@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from .constants import *
 import numpy as np
 from sklearn.metrics import (
@@ -8,7 +10,8 @@ from sklearn.metrics import (
 )
 
 
-def compute_error_metrics_latent_traits_estimation(y_true: list, y_pred: list, metrics: list = None) -> dict:
+def compute_error_metrics_latent_traits_estimation(
+        y_true: List[float], y_pred: List[float], metrics: List[str] = None) -> Dict[str, float]:
     dict_errors = dict()
     if metrics is None:
         metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR]
