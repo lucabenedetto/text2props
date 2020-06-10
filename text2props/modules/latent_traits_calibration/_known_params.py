@@ -1,9 +1,11 @@
+from typing import Dict, List
+
 from . import BaseLatentTraitsCalibrator
 
 
 class KnownParametersCalibrator(BaseLatentTraitsCalibrator):
 
-    def __init__(self, latent_traits: dict):
+    def __init__(self, latent_traits: Dict[str, Dict[str, float]]):
         """
         Initializes a KnownParametersCalibrator object. This is a degenerate estimator object, which does not perform an
         estimation but receives already-estimated latent traits.
@@ -17,14 +19,14 @@ class KnownParametersCalibrator(BaseLatentTraitsCalibrator):
         self.name_latent_traits = list(latent_traits.keys())
         self.estimated_latent_traits = latent_traits.copy()
 
-    def get_n_latent_traits(self):
+    def get_n_latent_traits(self) -> int:
         return self.n_latent_traits
 
-    def get_name_latent_traits(self):
+    def get_name_latent_traits(self) -> List[str]:
         return self.name_latent_traits
 
-    def get_calibrated_latent_traits(self) -> dict:
+    def get_calibrated_latent_traits(self) -> Dict[str, Dict[str, float]]:
         return self.estimated_latent_traits
 
-    def calibrate_latent_traits(self, df_gte) -> dict:
+    def calibrate_latent_traits(self, df_gte) -> Dict[str, Dict[str, float]]:
         return self.get_calibrated_latent_traits()

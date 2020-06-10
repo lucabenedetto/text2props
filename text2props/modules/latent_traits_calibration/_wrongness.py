@@ -1,10 +1,8 @@
+from typing import Dict
+
 import pandas as pd
 from text2props.modules.latent_traits_calibration import BaseLatentTraitsCalibrator
-from text2props.constants import (
-    WRONGNESS,
-    Q_ID,
-    CORRECT,
-)
+from text2props.constants import WRONGNESS, Q_ID, CORRECT
 from text2props.data_validation import check_answers_df_columns
 
 
@@ -15,7 +13,7 @@ class WrongnessCalibrator(BaseLatentTraitsCalibrator):
         self.name_latent_traits = [WRONGNESS]
         self.estimated_latent_traits = dict()
 
-    def calibrate_latent_traits(self, df_gte: pd.DataFrame) -> dict:
+    def calibrate_latent_traits(self, df_gte: pd.DataFrame) -> Dict[str, Dict[str, float]]:
         check_answers_df_columns(df_gte)
         df_count_total = df_gte.groupby(Q_ID).size().reset_index()
         dict_count_total = {q_id: count for q_id, count in df_count_total[[Q_ID, 0]].values}
