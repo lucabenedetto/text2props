@@ -1,3 +1,5 @@
+from typing import Dict
+
 from .._model import Text2PropsModel
 from text2props.modules.latent_traits_calibration import IRTCalibrator
 from text2props.modules.latent_traits_calibration import KnownParametersCalibrator
@@ -30,7 +32,7 @@ class R2DEText2PropsModel(Text2PropsModel):
     - IRTCalibrator that performs the estimation of difficulty and discrimination
     - Estimator from Text that made of two FeatEng (both IRFeatures) + Regression (both Sklearn RandomForests) pipelines
     """
-    def __init__(self, random_state: int = None, known_latent_traits: dict = None):
+    def __init__(self, random_state: int = None, known_latent_traits: Dict[str, Dict[str, float]] = None):
         if known_latent_traits is not None:
             latent_traits_calibrator = KnownParametersCalibrator(latent_traits=known_latent_traits)
             if set(known_latent_traits.keys()) != {DIFFICULTY, DISCRIMINATION}:
