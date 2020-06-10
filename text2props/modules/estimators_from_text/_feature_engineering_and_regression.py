@@ -15,7 +15,7 @@ class FeatureEngAndRegressionPipeline(object):
         partial_results = self.feat_eng_module.fit_transform(input_df)
         self.regression_module.train(partial_results, y)
 
-    def predict(self, input_df: pd.DataFrame) -> List:
+    def predict(self, input_df: pd.DataFrame) -> List[float]:
         partial_results = self.feat_eng_module.transform(input_df)
         return self.regression_module.predict(partial_results)
 
