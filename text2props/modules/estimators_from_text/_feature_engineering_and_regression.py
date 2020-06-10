@@ -79,7 +79,7 @@ class FeatureEngAndRegressionEstimatorFromText(BaseEstimatorFromText):
             n_jobs: int = None,
             cv: int = None,
             random_state: int = None,
-    ) -> List[float]:
+    ) -> Dict[str, float]:
         """
         Trains the EstimatorFromText object with RandomizedCV, bu training all the pipelines, and returns the scores so
         that they can be compared with the results obtained with other models.
@@ -93,18 +93,16 @@ class FeatureEngAndRegressionEstimatorFromText(BaseEstimatorFromText):
         :param random_state:
         :return:
         """
-        scores = []
+        scores = dict()
         for latent_trait in self.pipelines.keys():
             local_y = [ground_truth_latent_traits[latent_trait][q_id] for q_id in df_train[Q_ID].values]
-            scores.append(
-                self.pipelines[latent_trait].randomized_cv_train(
-                    param_distributions=param_distributions[latent_trait],
-                    df_train=df_train,
-                    y_train=local_y,
-                    n_iter=n_iter,
-                    n_jobs=n_jobs,
-                    cv=cv,
-                    random_state=random_state
-                )
+            scores[latent_trait] = self.pipelines[latent_trait].randomized_cv_train(
+                param_distributions=param_distributions[latent_trait],
+                df_train=df_train,
+                y_train=local_y,
+                n_iter=n_iter,
+                n_jobs=n_jobs,
+                cv=cv,
+                random_state=random_state
             )
         return scores

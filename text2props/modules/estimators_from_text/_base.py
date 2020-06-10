@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict
+from typing import Dict, List
 import pandas as pd
 
 
@@ -15,9 +15,9 @@ class BaseEstimatorFromText(object):
         raise NotImplementedError
 
     @abstractmethod
-    def randomized_cv_train(self, **params):
+    def randomized_cv_train(self, **params) -> Dict[str, float]:
         raise NotImplementedError
 
     @abstractmethod
-    def predict(self, input_df) -> dict:
+    def predict(self, input_df: pd.DataFrame) -> Dict[str, List]:
         raise NotImplementedError
