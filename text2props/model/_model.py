@@ -64,7 +64,7 @@ class Text2PropsModel(object):
             cv: int = None,
             random_state: int = None,
             perform_calibration: bool = False
-    ):
+    ) -> Dict[str, float]:
         """
         Performs the training with RandomizedCV of the EstimatorFromText object of the Text2PropsModel object. Then, it
         returns the scores. It can work both with already calibrated latent traits and with latent traits to be
