@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+from typing import Dict
+import pandas as pd
 
 
 class BaseEstimatorFromText(object):
@@ -9,7 +11,7 @@ class BaseEstimatorFromText(object):
         pass
 
     @abstractmethod
-    def train(self, input_df, ground_truth_latent_traits):
+    def train(self, input_df: pd.DataFrame, ground_truth_latent_traits: Dict[str, Dict[str, float]]):
         raise NotImplementedError
 
     @abstractmethod
