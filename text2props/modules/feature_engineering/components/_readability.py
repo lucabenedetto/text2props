@@ -2,9 +2,7 @@ import pandas as pd
 import textstat
 from scipy.sparse import coo_matrix
 
-from text2props.constants import (
-    Q_TEXT,
-)
+from text2props.constants import Q_TEXT
 from . import BaseFeatEngComponent
 
 
@@ -13,7 +11,7 @@ class ReadabilityFeaturesComponent(BaseFeatEngComponent):
     def __init__(self, use_smog: bool = True):
         self.use_smog = use_smog
 
-    def fit_transform(self, input_df) -> coo_matrix:
+    def fit_transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
         Transforms the input data and returns a sparse matrix. It returns a sparse matrix, although these features are
         not sparse for consistency reasons with the other components.
@@ -22,7 +20,7 @@ class ReadabilityFeaturesComponent(BaseFeatEngComponent):
         """
         return self.transform(input_df)
 
-    def transform(self, input_df) -> coo_matrix:
+    def transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
         It receives a DF as parameter and computes the readability features, returning them in a feature array.
         The DF must have Q_TEXT in its columns. Returns a sparse matrix for consistency with the type returned by the

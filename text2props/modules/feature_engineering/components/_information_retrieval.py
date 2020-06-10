@@ -2,17 +2,13 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from scipy.sparse import coo_matrix
 from text2props.constants import Q_TEXT
-from ..utils import (
-    gen_wrong_answers_dict,
-    gen_correct_answers_dict,
-    concatenate_answers_text_into_question_text_df,
-)
+from ..utils import gen_wrong_answers_dict, gen_correct_answers_dict, concatenate_answers_text_into_question_text_df
 from . import BaseFeatEngComponent
 
 
 class IRFeaturesComponent(BaseFeatEngComponent):
 
-    def __init__(self, vectorizer: CountVectorizer, concatenate_correct=None, concatenate_wrong=None):
+    def __init__(self, vectorizer: CountVectorizer, concatenate_correct: bool = None, concatenate_wrong: bool = None):
         self.vectorizer = vectorizer
         self.correct_text_dict = None
         self.wrong_text_dict = None

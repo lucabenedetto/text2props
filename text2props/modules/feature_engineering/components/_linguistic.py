@@ -2,14 +2,8 @@ import numpy as np
 import pandas as pd
 import textstat
 from scipy.sparse import coo_matrix
-from text2props.constants import (
-    Q_TEXT,
-    Q_ID,
-)
-from ..utils import (
-    gen_correct_answers_dict,
-    gen_wrong_answers_dict,
-)
+from text2props.constants import Q_TEXT, Q_ID
+from ..utils import gen_correct_answers_dict, gen_wrong_answers_dict
 from . import BaseFeatEngComponent
 
 
@@ -18,7 +12,7 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
     def __init__(self):
         return
 
-    def fit_transform(self, input_df) -> coo_matrix:
+    def fit_transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
         Transforms the input data and returns a sparse matrix. It returns a sparse matrix, although these features are
         not sparse for consistency reasons with the other components.
@@ -27,7 +21,7 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
         """
         return self.transform(input_df)
 
-    def transform(self, input_df) -> coo_matrix:
+    def transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
         It computes and returns the linguistic features from the input DF. The DF must include the following attributes
         in its columns: Q_TEXT, Q_ID
