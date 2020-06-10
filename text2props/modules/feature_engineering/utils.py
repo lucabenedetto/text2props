@@ -1,16 +1,10 @@
 from typing import Dict, List, Iterable
 
 import pandas as pd
-from text2props.constants import (
-    Q_ID,
-    Q_TEXT,
-    CORRECT_TEXTS,
-    WRONG_TEXTS,
-)
+from text2props.constants import Q_ID, Q_TEXT, CORRECT_TEXTS, WRONG_TEXTS
 import re
 import string
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
 
 
