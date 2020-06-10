@@ -11,8 +11,7 @@ class SklearnRegressionComponent(BaseRegressionComponent):
 
     def __init__(self, regressor, latent_trait_range: Tuple[float, float]):
         self.regressor = regressor
-        self.min_latent_trait = latent_trait_range[0]
-        self.max_latent_trait = latent_trait_range[1]
+        self.min_latent_trait, self.max_latent_trait = latent_trait_range
 
     def train(self, x: coo_matrix, y: List[float]):
         self.regressor.fit(x, y)
