@@ -6,13 +6,25 @@ The framework *text2props* was presented in the paper "*Introducing a framework 
 Natural Language Processing*" at the 21st International Conference on Artificial Intelligence in Education 
 ([AIED20](https://aied2020.nees.com.br/)).
 
-If you use this framework, please cite the related paper (at the moment, only the pre-print version is available):
+If you use this framework, please cite the related paper:
 ```
-@article{benedetto2020introducing,
-  title={Introducing a framework to assess newly created questions with Natural Language Processing},
-  author={Benedetto, Luca and Cappelli, Andrea and Turrin, Roberto and Cremonesi, Paolo},
-  journal={arXiv preprint arXiv:2004.13530},
-  year={2020}
+@InProceedings{10.1007/978-3-030-52237-7_4,
+author="Benedetto, Luca
+and Cappelli, Andrea
+and Turrin, Roberto
+and Cremonesi, Paolo",
+editor="Bittencourt, Ig Ibert
+and Cukurova, Mutlu
+and Muldner, Kasia
+and Luckin, Rose
+and Mill{\'a}n, Eva",
+title="Introducing a Framework to Assess Newly Created Questions with Natural Language Processing",
+booktitle="Artificial Intelligence in Education",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="43--54",
+isbn="978-3-030-52237-7"
 }
 ```
 
@@ -33,7 +45,7 @@ If you want to do so in a new virtual environment, you can use the following com
 
 ```
 conda create -n venv-text2props python=3.7 pip
-pip setup.py install
+python setup.py install
 ```
 
 Then, you can run the example scripts (no dataset is provided within this repo, though, you have to get your own):
