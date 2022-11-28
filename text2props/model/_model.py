@@ -1,15 +1,15 @@
 from ..constants import Q_ID, DATA_PATH
 from ..data_validation import check_question_df_columns, check_answers_df_columns
 from ..evaluation.latent_traits_estimation import (
-    compute_error_metrics_latent_traits_estimation,
-    compute_metrics_latent_traits_estimation_binary_classification,
+    compute_error_metrics_latent_traits_estimation_regression,
+    compute_eval_metrics_latent_traits_estimation_classification,
 )
 from ..modules.estimators_from_text import BaseEstimatorFromText
 from ..modules.latent_traits_calibration import BaseLatentTraitsCalibrator
 import os
 import pandas as pd
 import pickle
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class Text2PropsModel(object):
@@ -102,8 +102,8 @@ class Text2PropsModel(object):
     def compute_error_metrics_latent_traits_estimation(
         self,
         input_df: pd.DataFrame,
-        binary_classification: bool = False,
-        threshold: float = 0.5,
+        classification: bool = False,
+        int_to_class_mapper = None,
     ) -> Dict[str, Dict[str, float]]:
         """
         Performs the prediction from the input dataframe, and compute the error metrics for the estimation of each
@@ -111,18 +111,19 @@ class Text2PropsModel(object):
         :param input_df:
         :return:
         """
+        if classification and int_to_class_mapper is None:
+            raise ValueError("If classification, you must pass the mapping method")
         results = dict()
         predictions = self.predict(input_df)
         for latent_trait in self.latent_traits:
             results[latent_trait] = dict()
             y_pred = predictions[latent_trait]
             y_true = [self.ground_truth_latent_traits[latent_trait][q_id] for q_id in input_df[Q_ID].values]
-            if binary_classification:
-                y_true = [x>threshold for x in y_true]
-                y_pred = [x>threshold for x in y_pred]
-                results[latent_trait] = compute_metrics_latent_traits_estimation_binary_classification(y_true, y_pred)
+            if classification:
+                y_pred = [int_to_class_mapper(x) for x in y_pred]
+                results[latent_trait] = compute_eval_metrics_latent_traits_estimation_classification(y_true, y_pred)
             else:
-                results[latent_trait] = compute_error_metrics_latent_traits_estimation(y_true, y_pred)
+                results[latent_trait] = compute_error_metrics_latent_traits_estimation_regression(y_true, y_pred)
             return results
 
     def get_calibrated_latent_traits(self) -> Dict[str, Dict[str, float]]:

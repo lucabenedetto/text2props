@@ -16,7 +16,20 @@ from sklearn.metrics import (
 
 
 def compute_error_metrics_latent_traits_estimation(
-        y_true: List[float], y_pred: List[float], metrics: List[str] = None) -> Dict[str, float]:
+        y_true: List[float],
+        y_pred: List[float],
+        metrics: List[str] = None
+) -> Dict[str, float]:
+    # this is kept for backward compatibility, since scripts written before November 2022 could use this instead of the
+    # one with "regression" in the name.
+    return compute_error_metrics_latent_traits_estimation_regression(y_true, y_pred, metrics)
+
+
+def compute_error_metrics_latent_traits_estimation_regression(
+        y_true: List[float],
+        y_pred: List[float],
+        metrics: List[str] = None
+) -> Dict[str, float]:
     dict_errors = dict()
     if metrics is None:
         metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR, NDCG]
@@ -37,7 +50,7 @@ def compute_error_metrics_latent_traits_estimation(
     return dict_errors
 
 
-def compute_metrics_latent_traits_estimation_binary_classification(
+def compute_eval_metrics_latent_traits_estimation_classification(
         y_true: List[bool],
         y_pred: List[bool],
         metrics: List[str] = None
