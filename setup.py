@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name='text2props',
     packages=find_packages(),
-    version='0.1.0',
+    version='0.2.0',
     description='Framework for the estimation of questions latent traits from text.',
     author='Luca Benedetto',
     license='gpl-3.0',
