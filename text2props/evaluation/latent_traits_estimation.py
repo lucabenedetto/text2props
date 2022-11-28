@@ -7,6 +7,11 @@ from sklearn.metrics import (
     mean_absolute_error,
     r2_score,
     max_error,
+    ndcg_score,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
 )
 
 
@@ -14,7 +19,7 @@ def compute_error_metrics_latent_traits_estimation(
         y_true: List[float], y_pred: List[float], metrics: List[str] = None) -> Dict[str, float]:
     dict_errors = dict()
     if metrics is None:
-        metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR]
+        metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR, NDCG]
     if MAE in metrics:
         dict_errors[MAE] = mean_absolute_error(y_true, y_pred)
     if MSE in metrics:
@@ -27,4 +32,25 @@ def compute_error_metrics_latent_traits_estimation(
         dict_errors[MAX_ERROR] = max_error(y_true, y_pred)
     if MIN_ERROR in metrics:
         dict_errors[MIN_ERROR] = np.min([np.abs(y_true[idx] - y_pred[idx]) for idx in range(len(y_true))])
+    if NDCG in metrics:
+        dict_errors[NDCG] = ndcg_score([[x + 5 for x in y_true]], [[x + 5 for x in y_pred]])
+    return dict_errors
+
+
+def compute_metrics_latent_traits_estimation_binary_classification(
+        y_true: List[bool],
+        y_pred: List[bool],
+        metrics: List[str] = None
+    ) -> Dict[str, float]:
+    dict_errors = dict()
+    if metrics is None:
+        metrics = [ACC, PREC, REC, F1]
+    if ACC in metrics:
+        dict_errors[ACC] = accuracy_score(y_true, y_pred)
+    if PREC in metrics:
+        dict_errors[PREC] = precision_score(y_true, y_pred)
+    if REC in metrics:
+        dict_errors[REC] = recall_score(y_true, y_pred)
+    if F1 in metrics:
+        dict_errors[F1] = f1_score(y_true, y_pred)
     return dict_errors
