@@ -5,7 +5,7 @@ from text2props.constants import Q_ID, Q_TEXT, CORRECT_TEXTS, WRONG_TEXTS
 import re
 import string
 from nltk.stem import PorterStemmer, WordNetLemmatizer
-from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
+from text2props.utils.nlp import ENGLISH_STOP_WORDS
 
 
 def gen_correct_answers_dict(input_df: pd.DataFrame) -> Dict[str, List[str]]:
