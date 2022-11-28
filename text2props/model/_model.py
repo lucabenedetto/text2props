@@ -1,6 +1,9 @@
 from ..constants import Q_ID, DATA_PATH
 from ..data_validation import check_question_df_columns, check_answers_df_columns
-from ..evaluation.latent_traits_estimation import compute_error_metrics_latent_traits_estimation
+from ..evaluation.latent_traits_estimation import (
+    compute_error_metrics_latent_traits_estimation,
+    compute_metrics_latent_traits_estimation_binary_classification,
+)
 from ..modules.estimators_from_text import BaseEstimatorFromText
 from ..modules.latent_traits_calibration import BaseLatentTraitsCalibrator
 import os
@@ -96,7 +99,12 @@ class Text2PropsModel(object):
         )
         return scores
 
-    def compute_error_metrics_latent_traits_estimation(self, input_df: pd.DataFrame) -> Dict[str, Dict[str, float]]:
+    def compute_error_metrics_latent_traits_estimation(
+        self,
+        input_df: pd.DataFrame,
+        binary_classification: bool = False,
+        threshold: float = 0.5,
+    ) -> Dict[str, Dict[str, float]]:
         """
         Performs the prediction from the input dataframe, and compute the error metrics for the estimation of each
         latent trait. The results are returned in a dictionary whose keys are the name of the latent traits.
@@ -109,8 +117,13 @@ class Text2PropsModel(object):
             results[latent_trait] = dict()
             y_pred = predictions[latent_trait]
             y_true = [self.ground_truth_latent_traits[latent_trait][q_id] for q_id in input_df[Q_ID].values]
-            results[latent_trait] = compute_error_metrics_latent_traits_estimation(y_true, y_pred)
-        return results
+            if binary_classification:
+                y_true = [x>threshold for x in y_true]
+                y_pred = [x>threshold for x in y_pred]
+                results[latent_trait] = compute_metrics_latent_traits_estimation_binary_classification(y_true, y_pred)
+            else:
+                results[latent_trait] = compute_error_metrics_latent_traits_estimation(y_true, y_pred)
+            return results
 
     def get_calibrated_latent_traits(self) -> Dict[str, Dict[str, float]]:
         """
