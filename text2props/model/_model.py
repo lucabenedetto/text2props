@@ -103,27 +103,31 @@ class Text2PropsModel(object):
         self,
         input_df: pd.DataFrame,
         classification: bool = False,
-        int_to_class_mapper = None,
+        int_to_class_mapper=None,
+        metrics: List[str] = None,
     ) -> Dict[str, Dict[str, float]]:
         """
         Performs the prediction from the input dataframe, and compute the error metrics for the estimation of each
         latent trait. The results are returned in a dictionary whose keys are the name of the latent traits.
         :param input_df:
+        :param classification:
+        :param int_to_class_mapper:
+        :param metrics:
         :return:
         """
         if classification and int_to_class_mapper is None:
             raise ValueError("If classification, you must pass the mapping method")
         results = dict()
         predictions = self.predict(input_df)
-        for latent_trait in self.latent_traits:
-            results[latent_trait] = dict()
-            y_pred = predictions[latent_trait]
-            y_true = [self.ground_truth_latent_traits[latent_trait][q_id] for q_id in input_df[Q_ID].values]
+        for lt in self.latent_traits:
+            results[lt] = dict()
+            y_pred = predictions[lt]
+            y_true = [self.ground_truth_latent_traits[lt][q_id] for q_id in input_df[Q_ID].values]
             if classification:
                 y_pred = [int_to_class_mapper(x) for x in y_pred]
-                results[latent_trait] = compute_eval_metrics_latent_traits_estimation_classification(y_true, y_pred)
+                results[lt] = compute_eval_metrics_latent_traits_estimation_classification(y_true, y_pred, metrics)
             else:
-                results[latent_trait] = compute_error_metrics_latent_traits_estimation_regression(y_true, y_pred)
+                results[lt] = compute_error_metrics_latent_traits_estimation_regression(y_true, y_pred, metrics)
             return results
 
     def get_calibrated_latent_traits(self) -> Dict[str, Dict[str, float]]:
