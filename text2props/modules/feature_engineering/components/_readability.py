@@ -8,8 +8,9 @@ from . import BaseFeatEngComponent
 
 class ReadabilityFeaturesComponent(BaseFeatEngComponent):
 
-    def __init__(self, use_smog: bool = True):
+    def __init__(self, use_smog: bool = True, version: int = 1):
         self.use_smog = use_smog
+        self.version = version
 
     def fit_transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
@@ -39,4 +40,7 @@ class ReadabilityFeaturesComponent(BaseFeatEngComponent):
         df['coleman_liau'] = input_df.apply(lambda r: textstat.coleman_liau_index(r[Q_TEXT]), axis=1)
         if self.use_smog:
             df['smog_index'] = input_df.apply(lambda r: textstat.smog_index(r[Q_TEXT]), axis=1)
+        if self.version > 1:
+            df['linsear_write_formula'] = input_df.apply(lambda r: textstat.linsear_write_formula(r[Q_TEXT]), axis=1)
+            df['dale_chall'] = input_df.apply(lambda r: textstat.dale_chall(r[Q_TEXT]), axis=1)
         return coo_matrix(df.values)
