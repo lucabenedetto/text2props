@@ -7,11 +7,12 @@ import pandas as pd
 
 class FeatureEngineeringModule(object):
 
-    def __init__(self, components: List[BaseFeatEngComponent] = None):
+    def __init__(self, components: List[BaseFeatEngComponent] = None, normalize_method = None):
         if components is None:
             self.components = []
         else:
             self.components = components
+        self.normalize_method = normalize_method
 
     def add_component(self, component: BaseFeatEngComponent):
         """
@@ -39,7 +40,10 @@ class FeatureEngineeringModule(object):
         partial_results = []
         for component in self.components:
             partial_results.append(component.fit_transform(input_df))
-        return hstack(partial_results)
+        partial_results = hstack(partial_results)
+        if self.normalize_method is not None:
+            partial_results = self.normalize_method(partial_results)
+        return partial_results
 
     def transform(self, input_df: pd.DataFrame) -> coo_matrix:
         """
@@ -50,4 +54,7 @@ class FeatureEngineeringModule(object):
         partial_results = []
         for component in self.components:
             partial_results.append(component.transform(input_df))
-        return hstack(partial_results)
+        partial_results = hstack(partial_results)
+        if self.normalize_method is not None:
+            partial_results = self.normalize_method(partial_results)
+        return partial_results
