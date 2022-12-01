@@ -42,5 +42,5 @@ class ReadabilityFeaturesComponent(BaseFeatEngComponent):
             df['smog_index'] = input_df.apply(lambda r: textstat.smog_index(r[Q_TEXT]), axis=1)
         if self.version > 1:
             df['linsear_write_formula'] = input_df.apply(lambda r: textstat.linsear_write_formula(r[Q_TEXT]), axis=1)
-            df['dale_chall'] = input_df.apply(lambda r: textstat.dale_chall(r[Q_TEXT]), axis=1)
+            df['dale_chall'] = input_df.apply(lambda r: textstat.dale_chall_readability_score(r[Q_TEXT]), axis=1)
         return coo_matrix(df.values)
