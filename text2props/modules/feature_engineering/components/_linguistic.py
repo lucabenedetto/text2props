@@ -6,6 +6,16 @@ from text2props.constants import Q_TEXT, Q_ID
 from ..utils import gen_correct_answers_dict, gen_wrong_answers_dict
 from . import BaseFeatEngComponent
 
+LEXICON_COUNT_QUESTION = 'lexicon_count_question'
+LEXICON_COUNT_CORRECT_CHOICES = 'lexicon_count_correct_choices'
+LEXICON_COUNT_WRONG_CHOICES = 'lexicon_count_wrong_choices'
+SENTENCE_COUNT_QUESTION = 'sentence_count_question'
+SENTENCE_COUNT_CORRECT_CHOICES = 'sentence_count_correct_choices'
+SENTENCE_COUNT_WRONG_CHOICES = 'sentence_count_wrong_choices'
+AVG_WORD_LEN_QUESTION = 'avg_word_len_question'
+RATIO_LEN_QUESTION_CORRECT_CHOICES = 'ratio_len_question_correct_choices'
+RATIO_LEN_QUESTION_WRONG_CHOICES = 'ratio_len_question_wrong_choices'
+
 
 class LinguisticFeaturesComponent(BaseFeatEngComponent):
 
@@ -37,19 +47,26 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
         wrong_ans_text_dict = gen_wrong_answers_dict(input_df)
 
         df = pd.DataFrame()
-        df['lexicon_count_question'] = input_df.apply(lambda r: textstat.lexicon_count(r[Q_TEXT]), axis=1)
-        df['lexicon_count_correct_choices'] = input_df.apply(
+        # features about number of words
+        df[LEXICON_COUNT_QUESTION] = input_df.apply(lambda r: textstat.lexicon_count(r[Q_TEXT]), axis=1)
+        df[LEXICON_COUNT_CORRECT_CHOICES] = input_df.apply(
             lambda r: np.mean([textstat.lexicon_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
-        df['lexicon_count_wrong_choices'] = input_df.apply(
+        df[LEXICON_COUNT_WRONG_CHOICES] = input_df.apply(
             lambda r: np.mean([textstat.lexicon_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
-        df['sentence_count_question'] = input_df.apply(lambda r: textstat.sentence_count(r[Q_TEXT]), axis=1)
-        df['sentence_count_correct_choices'] = input_df.apply(
+
+        # features about the number of sentences
+        df[SENTENCE_COUNT_QUESTION] = input_df.apply(lambda r: textstat.sentence_count(r[Q_TEXT]), axis=1)
+        df[SENTENCE_COUNT_CORRECT_CHOICES] = input_df.apply(
             lambda r: np.mean([textstat.sentence_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
-        df['sentence_count_wrong_choices'] = input_df.apply(
+        df[SENTENCE_COUNT_WRONG_CHOICES] = input_df.apply(
             lambda r: np.mean([textstat.sentence_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
-        df['avg_word_len_question'] = input_df.apply(lambda r: np.mean([len(x) for x in r[Q_TEXT].split(' ')]), axis=1)
-        df['ratio_len_question_correct_choices'] = df.apply(
-            lambda r: (1 + r['lexicon_count_question']) / (1 + r['lexicon_count_correct_choices']), axis=1)
-        df['ratio_len_question_wrong_choices'] = df.apply(
-            lambda r: (1 + r['lexicon_count_question']) / (1 + r['lexicon_count_wrong_choices']), axis=1)
+
+        # features about the length of the words
+        df[AVG_WORD_LEN_QUESTION] = input_df.apply(lambda r: np.mean([len(x) for x in r[Q_TEXT].split(' ')]), axis=1)
+
+        # rations between the same features computed on the question and on the correct/wrong choices
+        df[RATIO_LEN_QUESTION_CORRECT_CHOICES] = df.apply(
+            lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_CORRECT_CHOICES]), axis=1)
+        df[RATIO_LEN_QUESTION_WRONG_CHOICES] = df.apply(
+            lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_WRONG_CHOICES]), axis=1)
         return coo_matrix(df.values)
