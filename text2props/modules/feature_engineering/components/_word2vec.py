@@ -79,7 +79,7 @@ class Word2VecFeaturesComponent(BaseFeatEngComponent):
         results = np.empty([len(local_df.index), self.size])
         for idx, text in enumerate(local_df[Q_TEXT].values):
             results[idx, :] = np.mean(
-                [self.model.wv[x] if x in self.model.wv.vocab else np.zeros(self.size) for x in text.split(' ')],
+                [self.model.wv[x] if x in self.model.wv.key_to_index.keys() else np.zeros(self.size) for x in text.split(' ')],
                 axis=0
             )
         return coo_matrix(results)
