@@ -27,6 +27,8 @@ AVG_NUM_SHORT_WORDS_PER_SENTENCE = 'avg_num_short_words_per_sentence'
 AVG_NOUNS_PER_SENTENCE = 'avg_nouns_per_sentence'
 AVG_VERBS_PER_SENTENCE = 'avg_verbs_per_sentence'
 
+nltk.download('averaged_perceptron_tagger')
+
 
 class LinguisticFeaturesComponent(BaseFeatEngComponent):
 
@@ -86,7 +88,6 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
                 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
                 list_sentences_question = tokenizer.tokenize(q_text)
 
-                nltk.download('averaged_perceptron_tagger')
                 words_list = nltk.word_tokenize(q_text)
                 tagged_words_list = nltk.pos_tag(words_list)
 
