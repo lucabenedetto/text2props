@@ -62,7 +62,7 @@ class Word2VecFeaturesComponent(BaseFeatEngComponent):
         if self.input_model_name is None:
             sentences = [gensim.utils.simple_preprocess(q_text) for q_text in local_df[Q_TEXT]]
             self.model = gensim.models.Word2Vec(
-                sentences=sentences, min_count=self.min_count, size=self.size, seed=self.seed, workers=self.workers,
+                sentences=sentences, min_count=self.min_count, vector_size=self.size, seed=self.seed, workers=self.workers,
             )
             if self.output_model_name is not None:
                 self.model.save(os.path.join(self.output_model_path, self.output_model_name))
