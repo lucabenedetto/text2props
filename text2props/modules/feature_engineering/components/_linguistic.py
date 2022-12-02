@@ -47,26 +47,21 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
         wrong_ans_text_dict = gen_wrong_answers_dict(input_df)
 
         df = pd.DataFrame()
+
         # features about number of words
         df[LEXICON_COUNT_QUESTION] = input_df.apply(lambda r: textstat.lexicon_count(r[Q_TEXT]), axis=1)
-        df[LEXICON_COUNT_ANSWERS] = input_df.apply(
-            lambda r: np.mean([textstat.lexicon_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
-        df[LEXICON_COUNT_DISTRACTORS] = input_df.apply(
-            lambda r: np.mean([textstat.lexicon_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
+        df[LEXICON_COUNT_ANSWERS] = input_df.apply(lambda r: np.mean([textstat.lexicon_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
+        df[LEXICON_COUNT_DISTRACTORS] = input_df.apply(lambda r: np.mean([textstat.lexicon_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
 
         # features about the number of sentences
         df[SENTENCE_COUNT_QUESTION] = input_df.apply(lambda r: textstat.sentence_count(r[Q_TEXT]), axis=1)
-        df[SENTENCE_COUNT_ANSWERS] = input_df.apply(
-            lambda r: np.mean([textstat.sentence_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
-        df[SENTENCE_COUNT_DISTRACTORS] = input_df.apply(
-            lambda r: np.mean([textstat.sentence_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
+        df[SENTENCE_COUNT_ANSWERS] = input_df.apply(lambda r: np.mean([textstat.sentence_count(x) for x in correct_ans_text_dict[r[Q_ID]]]), axis=1)
+        df[SENTENCE_COUNT_DISTRACTORS] = input_df.apply(lambda r: np.mean([textstat.sentence_count(x) for x in wrong_ans_text_dict[r[Q_ID]]]), axis=1)
 
         # features about the length of the words
         df[AVG_WORD_LENGTH_QUESTION] = input_df.apply(lambda r: np.mean([len(x) for x in r[Q_TEXT].split(' ')]), axis=1)
 
         # rations between the same features computed on the question and on the correct/wrong choices
-        df[RATIO_LENGTH_QUESTION_ANSWERS] = df.apply(
-            lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_ANSWERS]), axis=1)
-        df[RATIO_LEN_QUESTION_DISTRACTORS] = df.apply(
-            lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_DISTRACTORS]), axis=1)
+        df[RATIO_LENGTH_QUESTION_ANSWERS] = df.apply(lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_ANSWERS]), axis=1)
+        df[RATIO_LEN_QUESTION_DISTRACTORS] = df.apply(lambda r: (1 + r[LEXICON_COUNT_QUESTION]) / (1 + r[LEXICON_COUNT_DISTRACTORS]), axis=1)
         return coo_matrix(df.values)
