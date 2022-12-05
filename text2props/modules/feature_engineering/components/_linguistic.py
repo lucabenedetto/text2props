@@ -28,6 +28,7 @@ AVG_NOUNS_PER_SENTENCE = 'avg_nouns_per_sentence'
 AVG_VERBS_PER_SENTENCE = 'avg_verbs_per_sentence'
 
 nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
 
 
 class LinguisticFeaturesComponent(BaseFeatEngComponent):
