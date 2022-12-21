@@ -68,17 +68,27 @@ class LinguisticFeaturesComponent(BaseFeatEngComponent):
             answers_text = correct_ans_text_dict[q_id]
             distractors_text = wrong_ans_text_dict[q_id]
 
-            lexicon_count_question = textstat.lexicon_count(q_text)
-            lexicon_count_answers = np.mean([textstat.lexicon_count(x) for x in answers_text])
-            lexicon_count_distractors = np.mean([textstat.lexicon_count(x) for x in distractors_text])
+            try: lexicon_count_question = textstat.lexicon_count(q_text)
+            except TypeError: lexicon_count_question = 1
+            try: lexicon_count_answers = np.mean([textstat.lexicon_count(x) for x in answers_text])
+            except TypeError: lexicon_count_answers = 1
+            try: lexicon_count_distractors = np.mean([textstat.lexicon_count(x) for x in distractors_text])
+            except TypeError: lexicon_count_distractors = 1
+
+            try: sentence_count_question = textstat.sentence_count(q_text)
+            except TypeError: sentence_count_question = 1
+            try: sentence_count_answer = np.mean([textstat.sentence_count(x) for x in answers_text])
+            except TypeError: sentence_count_answer = 1
+            try: sentence_count_distractors = np.mean([textstat.sentence_count(x) for x in distractors_text])
+            except TypeError: sentence_count_distractors = 1
 
             new_row = pd.DataFrame([{
                 LEXICON_COUNT_QUESTION: lexicon_count_question,
                 LEXICON_COUNT_ANSWERS: lexicon_count_answers,
                 LEXICON_COUNT_DISTRACTORS: lexicon_count_distractors,
-                SENTENCE_COUNT_QUESTION: textstat.sentence_count(q_text),
-                SENTENCE_COUNT_ANSWERS: np.mean([textstat.sentence_count(x) for x in answers_text]),
-                SENTENCE_COUNT_DISTRACTORS: np.mean([textstat.sentence_count(x) for x in distractors_text]),
+                SENTENCE_COUNT_QUESTION: sentence_count_question,
+                SENTENCE_COUNT_ANSWERS: sentence_count_answer,
+                SENTENCE_COUNT_DISTRACTORS: sentence_count_distractors,
                 AVG_WORD_LENGTH_QUESTION: np.mean([len(x) for x in list_words]),
                 RATIO_LENGTH_QUESTION_ANSWERS: (1 + lexicon_count_question) / (1 + lexicon_count_answers),
                 RATIO_LEN_QUESTION_DISTRACTORS: (1 + lexicon_count_question) / (1 + lexicon_count_distractors),
