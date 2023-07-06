@@ -15,7 +15,7 @@ setup(
         'pandas==1.5.2',
         'pyirt==0.3.4',
         'scikit-learn==1.1.3',
-        'scipy==1.9.3',
+        'scipy==1.10.0',
         'textstat==0.7.3',
     ],
 )
