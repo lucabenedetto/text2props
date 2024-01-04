@@ -95,7 +95,7 @@ class FeatureEngAndRegressionEstimatorFromText(BaseEstimatorFromText):
         """
         scores = dict()
         for latent_trait in self.pipelines.keys():
-            local_y = [ground_truth_latent_traits[latent_trait][q_id] for q_id in df_train[Q_ID].values]
+            local_y = [ground_truth_latent_traits[latent_trait][str(q_id)] for q_id in df_train[Q_ID].values]
             scores[latent_trait] = self.pipelines[latent_trait].randomized_cv_train(
                 param_distributions=param_distributions[latent_trait],
                 df_train=df_train,
