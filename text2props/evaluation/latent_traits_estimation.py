@@ -32,7 +32,7 @@ def compute_error_metrics_latent_traits_estimation_regression(
 ) -> Dict[str, float]:
     dict_errors = dict()
     if metrics is None:
-        metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR, NDCG]
+        metrics = [MAE, MSE, RMSE, R2, MAX_ERROR, MIN_ERROR]
     if MAE in metrics:
         dict_errors[MAE] = mean_absolute_error(y_true, y_pred)
     if MSE in metrics:

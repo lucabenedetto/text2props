@@ -24,6 +24,7 @@ QUESTION_LATENT_TRAITS_DF_COLS = [Q_ID, LATENT_TRAIT]
 DIFFICULTY = 'difficulty'
 DISCRIMINATION = 'discrimination'
 WRONGNESS = 'wrongness'
+FACILITY = 'facility'
 DEFAULT_LT_NAME = 'default_latent_trait'
 
 # default values for latent traits
